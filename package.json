@@ -1,5 +1,5 @@
 {
-  "name": "@mapbox/leaflet-omnivore",
+  "name": "@jenkin/leaflet-omnivore",
   "version": "0.3.4",
   "description": "a geospatial format parser for Leaflet",
   "main": "index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:mapbox/leaflet-omnivore.git"
+    "url": "git@github.com:jenkin/leaflet-omnivore.git"
   },
   "files": [
     "index.js",
@@ -48,8 +48,8 @@
   },
   "homepage": "https://github.com/mapbox/leaflet-omnivore",
   "dependencies": {
+    "@jenkin/corslite": "github:jenkin/corslite#feature/arraybuffer-support",
     "brfs": "1.4.3",
-    "corslite": "git://github.com/jenkin/corslite.git#feature\/geobuf-support",
     "csv2geojson": "~5.0.0",
     "geobuf": "^3.0.0",
     "polyline": "0.2.0",
