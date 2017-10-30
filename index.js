@@ -1,4 +1,4 @@
-var xhr = require('corslite'),
+var xhr = require('@jenkin/corslite'),
     csv2geojson = require('csv2geojson'),
     wellknown = require('wellknown'),
     polyline = require('polyline'),
