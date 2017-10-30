@@ -3,6 +3,8 @@ var xhr = require('corslite'),
     wellknown = require('wellknown'),
     polyline = require('polyline'),
     topojson = require('topojson'),
+    Pbf = require('pbf'),
+    geobuf = require('geobuf'),
     toGeoJSON = require('togeojson');
 
 module.exports.polyline = polylineLoad;
@@ -12,6 +14,9 @@ module.exports.geojson = geojsonLoad;
 
 module.exports.topojson = topojsonLoad;
 module.exports.topojson.parse = topojsonParse;
+
+module.exports.geobuf = geobufLoad;
+module.exports.geobuf.parse = geobufParse;
 
 module.exports.csv = csvLoad;
 module.exports.csv.parse = csvParse;
@@ -65,6 +70,25 @@ function topojsonLoad(url, options, customLayer) {
     function onload(err, response) {
         if (err) return layer.fire('error', { error: err });
         topojsonParse(response.responseText, options, layer);
+        layer.fire('ready');
+    }
+    return layer;
+}
+
+/**
+ * Load a [GeoBuf](https://github.com/mapbox/geobuf) document into a layer and return the layer.
+ *
+ * @param {string} url
+ * @param {object} options
+ * @param {object} customLayer
+ * @returns {object}
+ */
+function geobufLoad(url, options, customLayer) {
+    var layer = customLayer || L.geoJson();
+    xhr(url, onload, null, 'arraybuffer');
+    function onload(err, response) {
+        if (err) return layer.fire('error', { error: err });
+        geobufParse(response.response, options, layer);
         layer.fire('ready');
     }
     return layer;
@@ -192,6 +216,13 @@ function topojsonParse(data, options, layer) {
         if (ft.features) addData(layer, ft.features);
         else addData(layer, ft);
     }
+    return layer;
+}
+
+function geobufParse(data, options, layer) {
+    layer = layer || L.geoJson();
+    var geojson = geobuf.decode(new Pbf(data));
+    addData(layer, geojson);
     return layer;
 }
 

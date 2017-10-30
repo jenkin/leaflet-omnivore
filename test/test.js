@@ -181,6 +181,24 @@ test('topojson.parse', function (t) {
     t.ok(lyr instanceof L.GeoJSON, 'produces geojson layer');
 });
 
+test('geobuf', function (t) {
+    t.plan(2);
+    var layer = omnivore.geobuf('a.pbf');
+    t.ok(layer instanceof L.GeoJSON, 'produces geojson layer');
+    layer.on('ready', function() {
+        t.pass('fires ready event');
+    });
+    layer.on('error', function() {
+        t.fail('does not fire error event');
+    });
+});
+
+test('geobuf.parse', function (t) {
+    t.plan(1);
+    var lyr = omnivore.geobuf.parse(fs.readFileSync('./test/a.pbf', 'utf8'));
+    t.ok(lyr instanceof L.GeoJSON, 'produces geojson layer');
+});
+
 test('geojson', function (t) {
     t.plan(2);
     var layer = omnivore.geojson('a.geojson');
